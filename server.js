@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 8173;
+const PORT =  8173;
 
 const allowedOrigins = [
   "http://localhost:5173",   // Vite React
