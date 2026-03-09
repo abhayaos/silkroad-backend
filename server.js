@@ -2,18 +2,17 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const PORT =  8173;
 
 const allowedOrigins = [
-  "http://localhost:5173",   // Vite React
-  "http://localhost:3000",   // CRA React
-  "https://yourfrontend.vercel.app" // production
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://yourfrontend.vercel.app"
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow Postman / curl
+      if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
@@ -39,9 +38,5 @@ app.get("/", (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
-
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
 
 module.exports = app;
