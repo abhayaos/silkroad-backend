@@ -40,10 +40,8 @@ app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
 
-if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
   });
-}
 
 module.exports = app;
