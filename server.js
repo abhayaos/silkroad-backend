@@ -1,18 +1,43 @@
-const express = require('express');
-const app = express();
+const express = require("express");
+const cors = require("cors");
 
+const app = express();
 const PORT = process.env.PORT || 8173;
 
-app.get('/', (req, res) => {
-  res.send('API running');
+const allowedOrigins = [
+  "http://localhost:5173",   // Vite React
+  "http://localhost:3000",   // CRA React
+  "https://yourfrontend.vercel.app" // production
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow Postman / curl
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  })
+);
+
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.json({
+    status: "success",
+    message: "Backend is running 🚀"
+  });
 });
 
-// 404 handler (works for ALL routes)
+// 404
 app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found"
-  });
+  res.status(404).json({ error: "Route not found" });
 });
 
 if (require.main === module) {
