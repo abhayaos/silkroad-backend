@@ -4,9 +4,9 @@
   const app = express();
   // const PORT = 5000;
   // server.js
-  const connectDb = require("./config/db");
+//   const connectDb = require("./config/db");
 
-  connectDb(); // ✅ works
+//   connectDb(); // ✅ works
 
   // Allow only your frontend URL
   const corsOptions = {
