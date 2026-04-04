@@ -2,22 +2,22 @@ const nodemailer = require("nodemailer");
 
 const sendOTP = async (email, otp) => {
   try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      throw new Error("Missing EMAIL_USER or EMAIL_PASS");
+    }
+
     console.log("📨 Sending OTP to:", email);
-    console.log("🔑 Using EMAIL_USER:", process.env.EMAIL_USER);
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
-    // TEST CONNECTION FIRST (IMPORTANT)
     await transporter.verify();
-    console.log("✅ SMTP connection verified");
+    console.log("✅ SMTP Ready");
 
     const info = await transporter.sendMail({
       from: `"Auth System" <${process.env.EMAIL_USER}>`,
@@ -30,11 +30,11 @@ const sendOTP = async (email, otp) => {
       `,
     });
 
-    console.log("📧 EMAIL SENT:", info.messageId);
-
+    console.log("📧 SENT:", info.messageId);
     return info;
+
   } catch (err) {
-    console.log("❌ EMAIL ERROR FULL:", err);
+    console.error("❌ EMAIL ERROR:", err.message);
     throw err;
   }
 };
